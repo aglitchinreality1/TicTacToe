@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TicTacToe</title>
+    <link rel="stylesheet" href="css/signin.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400..900&display=swap" rel="stylesheet">
+</head>
+<body>
+    <img id="back" src="images/back.gif">
+    <div id="sign">
+        <div class="welcome">PLAY TIC-TAC-TOE!</div>
+        <h1 class="login">Sign-in</h1>
+        <div class="signcontent">
+            <form action="/signin" method="post">
+                <label class="text" for="email">Your Email</label>
+                <input class="entry" type="email" id="email" name="email" required>
+    
+                <label class="text" for="password">Set Password</label>
+                <input class="entry en2" type="password" id="password" name="password" required>
+    
+                <input class="sub_button" type="submit" value="Sign In">
+            </form>
+        </div>
+        <p class="s">Already have an account? -<a href="/login">Login-</a></p>
+    </div>
+</body>
+</html>
