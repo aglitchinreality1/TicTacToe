@@ -35,11 +35,6 @@ app.get('/login', (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'login.html'));
 })
 
-//listen at port
-app.listen(port, () => {
-    console.log(`Server running at http://localhost:${port}`);
-});
-
 //sign in form submission
 app.post('/signin', async (req, res) => {
     const { email, password} = req.body;
@@ -70,7 +65,7 @@ app.post('/login', async (req, res) => {
             const hashedPassword = result.rows[0].password;
             const match = await bcrypt.compare(password, hashedPassword);
             if (match) {
-                return res.sendFile(path.join(__dirname, 'public','game.html')); 
+                return res.sendFile(path.join(__dirname, 'public','home.html')); 
             }
         } 
         res.send(`<p>Incorrect email or password. Try again.</p> <a href="/login">Go back to login</a>`);
@@ -78,5 +73,10 @@ app.post('/login', async (req, res) => {
         console.error('Error:',err);
         res.status(500).send('An error occurred while processing your request.');
     }
+});
+
+//listen at port
+app.listen(port, '0.0.0.0',() => {
+    console.log(`Server running at http://localhost:${port}`);
 });
 
