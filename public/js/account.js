@@ -13,7 +13,7 @@ document.addEventListener('DOMContentLoaded', () => {
             av.src = 'images/female.jpg';
         }
         else if(gen === null){
-            av.src = 'images/default.jpg';
+            av.src = 'images/default.png';
         }
       })
       .catch(error => console.error('Error fetching constant:', error));
@@ -49,3 +49,27 @@ display_data('age');
 display_data('wins');
 display_data('loses');
 display_data('draws')
+
+
+
+document.addEventListener('DOMContentLoaded', () => {
+  fetch('/api/wins')
+    .then(response => response.json())
+    .then(data => {
+      win = data.wins;
+      const im = document.getElementById('level');
+      if(win <= 10){
+          im.src = 'images/bronze.jpg';
+      }
+      else if(win>10 && win<=20){
+          im.src = 'images/silver.jpg';
+      }
+      else if(win>20 && win<=40){
+          im.src = 'images/gold.png';
+      }
+      else if(win>40){
+        im.src = 'images/diamond.png';
+    }
+    })
+    .catch(error => console.error('Error fetching constant:', error));
+});

@@ -102,17 +102,55 @@ body{
     padding-bottom: 2vh; 
     box-sizing: border-box;
 }
-
-.itemcon{
+.itemcon {
     display: flex;
     justify-content: center;
     width: 100%;
     background-color: black;
-    border-radius: 20px;
     height: 82vh;
+    overflow: scroll;
+    border-radius: 20px;
+}
+
+.item1{
+    border-radius: 0;
+    height: 75vh;
+}
+
+.bl1{
+    height: 26px;
+    background-color: black;
+    z-index: 100;
+    border-top-left-radius: 20px;
+    border-top-right-radius: 20px;
+    position: sticky;
+    top:0px;
+    padding: 0 0 0 0;
+}
+
+.bl2{
+    height: 26px;
+    background-color: black;
+    z-index: 100;
+    border-bottom-left-radius: 20px;
+    border-bottom-right-radius: 20px;
+    position: sticky;
+    top:0px;
+    padding: 0 0 0 0;
+    margin-bottom: 30px;
+}
+
+.itemcon::-webkit-scrollbar {
+    display: none;
+}
+
+
+body::-webkit-scrollbar {
+    display: none;
 }
 
 .h{
+    top: 3vh;
     position: relative;
     display: flex;
     justify-content: center;
@@ -120,7 +158,11 @@ body{
     font-family: "Orbitron", sans-serif !important;
     height: 10vh;
     font-size: xx-large;
-    top: 3vh;
+}
+
+.hed1{
+    top: 0px;
+    height: 7vh;
 }
 
 .row{
@@ -140,19 +182,42 @@ body{
     object-fit: cover;
 }
 
+.f1{
+    height: 230px;
+    margin-top: 15px;
+    margin-bottom: 15px;
+    background-image: url('../images/goldtheme.jpg');
+    background-size: cover;
+    background-attachment: fixed;
+    border-radius: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: "Orbitron", sans-serif;
+    font-size: 2.5vh;
+    font-weight: 800;
+    padding-left: 17px;
+    padding-right: 17px;
+}
+
+.f2{
+    height: 230px;
+    margin-top: 15px;
+    margin-bottom: 15px;
+}
+
 .infobox{
-    position: relative;
     display: flex;
     justify-content: center;
     align-items: center;
     bottom: 110px;
-    height: 260px;
-    border: 2px solid rgba(255, 202, 122, 0.875);
+    height: max-content;
+    border: 3px solid rgb(213, 156, 59);
     border-radius: 20px;
 }
 
 form{
-    color:  rgba(255, 202, 122, 0.875) !important;
+    color: rgb(213, 156, 59);
     font-family: "Orbitron", sans-serif !important;
 }
 
@@ -241,4 +306,47 @@ form{
     border: 5px solid rgb(119, 119, 119);
     border-radius: 20px;
     color: rgb(119, 119, 119);
+}
+
+.levels {
+    margin-top: 20px;
+    display: flex;
+    align-items: center;
+    height: 200px;
+    overflow: scroll;
+}
+
+@media (min-width: 768px) { 
+    .levels {
+        justify-content: center; 
+    }
+}
+
+
+.level{
+    border-radius: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 190px;
+    width: max-content;
+}
+
+.levels::-webkit-scrollbar {
+    display: none;
+}
+
+.limage{
+    height: 90%;
+}
+
+.i{
+    padding-bottom: 0;
+}
+
+.alimg{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0 0 0 0;
 }
