@@ -1,0 +1,279 @@
+body{
+    margin: 0;
+    padding: 0;
+    background-image: url('../images/goldtheme.jpg');
+    background-size: cover;
+    background-attachment: fixed;
+}
+
+.topcon{
+    position: absolute;
+    top: 3vh;
+}
+
+.navbar{
+    background-color: black !important;
+    font-family: "Orbitron", sans-serif !important;
+    border-radius: 10px;
+}
+
+.navbar-brand{
+    color: rgba(255, 202, 122, 0.852) !important;
+    padding-left: 1vh;
+    font-size: 3.5vh !important;
+    font-weight: 500;
+}
+
+.b{
+    color: rgba(255, 202, 122, 0.852) !important;
+    font-weight: 300;
+    font-size: 2.5vh !important;
+    padding-left: 1.5vh !important;
+    padding-right: 1.5vh !important;
+    border-radius: 10px;
+    margin-left: 2vh !important;
+    transition: transform 0.5s ease;
+}
+
+.b:hover{
+    color: black !important;
+    background-color:rgb(255, 202, 122) !important;
+    transform: scale(105%);
+}
+
+.navbar-brand::after {
+    content: 'Play TicTacToe!';
+    transition: opacity 0.3s ease, transform 0.3s ease; 
+    opacity: 1;
+}
+
+.navbar-brand:hover::after {
+    content: '';
+    opacity: 0; 
+}
+
+
+.navbar-brand:hover::before {
+    content: 'XOXOXOXOXOX';
+    opacity: 1;
+} 
+
+.sub{
+    color: black !important;
+    background-color: rgb(255, 202, 122) !important;
+    font-weight: 500 !important;
+    border: 0px !important;
+    transition: transform 0.5s ease;
+}
+
+.sub:hover{
+    color: rgb(255, 202, 122) !important;
+    background-color: black !important;
+    border: 1px solid rgb(255, 202, 122) !important;
+    transform: scale(105%);
+}
+
+.navbar-toggler{
+    background-color: rgb(255, 202, 122) !important;
+}
+
+
+/* separation */
+
+.mode{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    top: 100px;
+    margin: 0 0 0 0;
+    height: 81%;
+}
+
+.box{
+    margin: 0 0 0 0;
+    height: 400px;
+    background-color: black;
+    border-radius: 20px;
+    font-family: "Orbitron", sans-serif;
+    opacity: 1;
+    transition: opacity 1s ease;
+}
+
+.h{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: "Orbitron", sans-serif;
+    color: rgb(255, 202, 122);
+    height: 90px;
+}
+
+@media only screen and (max-width: 600px) {
+    .box {
+        height: 360px;
+    }
+    .h{
+        height: 70px;
+    }
+}
+
+.r{
+    padding: 0 0 0 0;
+    margin: 0 0 0 0;
+}
+
+.modes{
+    display: flex;
+    justify-content: center;
+    margin: 0 0 0 0;
+    height: 70%;
+}
+
+.ai {
+    border: 0;
+    height: 100%;
+    border-radius: 20px;
+    box-sizing: border-box;
+    transition: transform 0.3s ease; 
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-image: url('../images/ai.png');
+    cursor: pointer;
+}
+
+.online {
+    height: 100%;
+    border: 0;
+    border-radius: 20px;
+    box-sizing: border-box;
+    transition: transform 0.3s ease; 
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-image: url('../images/friend.png');
+    cursor: pointer;
+}
+
+.ai:hover, .online:hover {
+    transform: scale(1.05); 
+}
+
+
+
+
+
+.board {
+    aspect-ratio: 1;
+    border-radius: 20px;
+    font-family: "Orbitron", sans-serif;
+    background-color: black;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column; 
+    justify-content: space-between; 
+    opacity: 0;
+    transition: opacity 1s ease;
+}
+
+.rowboard {
+    margin-top: 4px;
+    display: flex; 
+    justify-content: space-between; 
+    flex-grow: 1; 
+    width: 100%;
+}
+
+.cell {
+    margin:5px 5px 5px 5px;
+    border-radius: 20px;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-image: url('../images/goldtheme.jpg');
+    display: flex; 
+    justify-content: center; 
+    align-items: center; 
+    box-sizing: border-box;
+    flex: 1; 
+    aspect-ratio: 1; 
+    font-size: xxx-large !important;
+    color: black;
+    font-weight: 800;
+}
+
+
+
+
+
+.you{
+    display: flex;
+    justify-content: flex-end;
+    aspect-ratio: 1;
+    transition: opacity 1s ease;
+    opacity: 0;
+}
+
+.opponent{
+    display: flex;
+    justify-content: flex-start;
+    aspect-ratio: 1;
+    transition: opacity 1s ease;
+    opacity: 0;
+}
+
+@media only screen and (max-width: 1024px) {
+    .you, .opponent {
+        display: none;
+    }
+}
+
+.player1, .player2 {
+    display: flex;
+    flex-direction: column; 
+    height: 100%;
+    background-color: black;
+    border-radius: 20px;
+    align-items: center; 
+    font-family: "Orbitron", sans-serif;
+    color: rgb(255, 202, 122); 
+}
+
+.cont {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 34vh;
+}
+
+.p1img, .p2img {
+    position: absolute;
+    height: 200px;
+    width: 200px;
+    border-radius: 10px;
+}
+
+.text-center {
+    text-align: center; 
+}
+
+.pt{
+    margin-top: 10px;
+}
+
+
+
+.popup {
+    position: fixed;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: white;
+    border: 1px solid black;
+    padding: 20px;
+    z-index: 1000;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
