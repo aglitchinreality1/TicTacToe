@@ -85,9 +85,10 @@ body{
     justify-content: center;
     align-items: center;
     position: absolute;
-    top: 100px;
     margin: 0 0 0 0;
+    top: 100px;
     height: 81%;
+    z-index: 50;
 }
 
 .box{
@@ -98,6 +99,7 @@ body{
     font-family: "Orbitron", sans-serif;
     opacity: 1;
     transition: opacity 1s ease;
+    z-index: 50;
 }
 
 .h{
@@ -115,6 +117,12 @@ body{
     }
     .h{
         height: 70px;
+    }
+    .mode{
+        height: 70%;
+    }
+    .createjoin{
+        height: 40vh;
     }
 }
 
@@ -212,23 +220,18 @@ body{
     display: flex;
     justify-content: flex-end;
     aspect-ratio: 1;
-    transition: opacity 1s ease;
     opacity: 0;
+    transition: opacity 1s ease;
 }
 
 .opponent{
     display: flex;
     justify-content: flex-start;
     aspect-ratio: 1;
-    transition: opacity 1s ease;
     opacity: 0;
+    transition: opacity 1s ease;
 }
 
-@media only screen and (max-width: 1024px) {
-    .you, .opponent {
-        display: none;
-    }
-}
 
 .player1, .player2 {
     display: flex;
@@ -276,4 +279,214 @@ body{
     z-index: 1000;
     border-radius: 10px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+
+.mobile{
+    display: flex;
+    justify-content: center;
+    height: 70px;
+    opacity: 0;
+    transition: opacity 1s ease;
+    margin: 0 0 0 0;
+    padding: 0 0 0 0;
+    gap: 4vh;
+    box-sizing: border-box;
+}
+
+.mobyou, .mobopp{
+    font-family: "Orbitron", sans-serif;
+    color: rgb(255, 202, 122); 
+    display: flex;
+    align-items: center;
+    background-color: black;
+    border-radius: 10px;
+    height: 100%;
+}
+
+.mobyou{
+    justify-content: flex-start;
+}
+
+.mobopp{
+    justify-content: flex-end;
+}
+
+.mobimg{
+    height: 80%;
+    aspect-ratio: 1;
+    border-radius: 5px;
+}
+
+.mobh{
+    margin-left: 10px;
+    margin-right: 10px;
+    font-weight: 900;
+    font-size: xxx-large;
+    margin-bottom: 0;
+}
+
+.winner{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    z-index: 10000;
+    height: 100vh;
+    width: 100vw;
+    backdrop-filter: blur( 7px );
+    -webkit-backdrop-filter: blur( 7px );
+    background-color: rgba(0, 0, 0, 0.697);
+}
+
+.message{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 30vh;
+    background-image: url('../images/goldtheme.jpg');
+    border: 10px solid black;
+    border-radius: 20px;
+    background-size: cover;
+    background-attachment: fixed;
+    font-family: "Orbitron", sans-serif;
+}
+
+.wh{
+    font-size: 45px;
+    font-weight: 800;
+    color: black;
+    text-align: center;
+}
+
+.buttons{
+    position: relative;
+    bottom: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 50px;
+    gap: 20px;
+}
+
+.bt{
+    background-color: black;
+    font-family: "Orbitron", sans-serif;
+    color: rgb(255, 202, 122); 
+    font-size: medium;
+    font-weight: 700;
+    height: 100%;
+    border: 0;
+    border-radius: 10px;
+    transition: transform 0.2s ease;
+}
+
+.bt:hover{
+    transform: scale(110%);
+}
+
+.turn{
+    margin-top: 10px;
+    aspect-ratio: 1;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+
+/* online mode */
+
+.createjoin{
+    display: flex;
+    justify-content: center;
+    position: absolute;
+    top: 25vh;
+    height: 60vh;
+    opacity: 0;
+    transition: opacity 1s ease;
+}
+.option {
+    z-index: 10000;
+    border: 10px solid black;
+    height: 100%;
+    border-radius: 20px;
+    display: flex;
+    transition: opacity 1s ease; /* Smooth opacity change */
+}
+
+.room-option {
+    font-family: "Orbitron", sans-serif;
+    color: rgb(255, 202, 122); 
+    flex: 1; 
+    background-color: black;
+    margin: 10px; 
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: opacity 0.5s ease; /* Smooth fade-out transition */
+}
+
+.roomcode{
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 100px;
+}
+
+@media only screen and (max-width: 600px) {
+    .createjoin{
+        top: 30vh;
+        height: 40vh;
+    }
+    .roomcode{
+        font-size: 60px;
+    }
+}
+
+
+.create, .join {
+    opacity: 0;
+    visibility: hidden;
+    background-color: black;
+    display: none; /* Initially hidden */
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    font-family: "Orbitron", sans-serif;
+    color: rgb(255, 202, 122);
+    height: 100%;
+    transition: opacity 1s ease, visibility 1s ease; /* Smooth fade-in and fade-out */
+}
+
+.show {
+    opacity: 1;
+    visibility: visible;
+}
+
+
+
+
+.incode, .inbutton{
+    height: 50px;
+    border-radius: 10px;
+    border: 0;
+    margin: 5px 5px 5px 5px;
+}
+
+#join-room-form{
+    display: flex;
+    justify-content: center;
+}
+
+.inbutton{
+    background-color: rgb(255, 202, 122);
+    font-weight: 700;
+    transition: transform 0.3s ease;
+}
+
+.inbutton:hover{
+    transform: scale(105%);
+}
+
+#wait{
+    margin-bottom: 0;
 }

@@ -3,6 +3,7 @@ const path = require('path');
 const bodyParser = require('body-parser');
 const { Pool } = require('pg');
 const bcrypt = require('bcrypt');
+const http = require('http');
 const app = express();
 const port = 3000;
 
@@ -135,6 +136,103 @@ app.post('/update', async (req,res) => {
         res.status(500).send('An error occurred while processing your request.');
     }
 })
+
+
+
+
+//online game logic//
+app.get('/generate-room-code', async (req, res) => {
+    const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    let roomCode = '';
+    for (let i = 0; i < 6; i++) {
+      roomCode += characters.charAt(Math.floor(Math.random() * characters.length));
+    }
+  
+    try {
+      // Insert the new room code into the 'rooms' table
+      await pool.query(
+        `INSERT INTO rooms (roomcode, x, o) VALUES ($1, 'ready', 'waiting')`,
+        [roomCode]
+      );
+
+      // Dynamically create an endpoint for the roomCode
+        app.get(`/${roomCode}`, (req, res) => {
+            res.sendFile(path.join(__dirname, 'public', 'endpoint.html'));
+        });
+  
+      // Send the generated room code to the client via SSE
+      res.setHeader('Content-Type', 'text/event-stream');
+      res.setHeader('Cache-Control', 'no-cache');
+      res.setHeader('Connection', 'keep-alive');
+  
+      // Send the room code to the client
+      res.write(`data: ${roomCode}\n\n`);
+  
+      // Set up an interval to check the value of 'o'
+      const intervalId = setInterval(async () => {
+        const result = await pool.query(
+          `SELECT o FROM rooms WHERE roomcode = $1`,
+          [roomCode]
+        );
+  
+        const oValue = result.rows[0].o; // Get the updated o value
+        console.log(`Current value of 'o' for roomcode ${roomCode}:`, oValue);
+  
+        // Check if oValue is ready
+        if (oValue === 'ready') {
+          clearInterval(intervalId); // Stop checking
+          res.write(`data: redirect\n\n`); // Send a signal to the client to redirect
+          // Set a timeout before the actual redirection
+          setTimeout(() => {
+            res.end(); // End the SSE connection
+            app.get(`/${roomCode}`, (req, res) => {
+              res.sendFile(path.join(__dirname, 'public', 'endpoint.html'));
+            });
+          }, 1000); // Adjust delay as needed
+        }
+      }, 1000); // Check every 1 second
+  
+    } catch (error) {
+      console.error('Error inserting or querying room code:', error);
+      res.status(500).send('Server error');
+    }
+  });
+  
+
+
+
+// Route to handle joining a room
+app.post('/join-room', async (req, res) => {
+    const { roomCode } = req.body;
+
+    try {
+        // Check if the room code exists in the rooms table
+        const result = await pool.query(
+            `SELECT * FROM rooms WHERE roomcode = $1`,
+            [roomCode]
+        );
+
+        if (result.rows.length > 0) {
+            // Room code exists, update 'o' to 'ready'
+            await pool.query(
+                `UPDATE rooms SET o = 'ready' WHERE roomcode = $1`,
+                [roomCode]
+            );
+            // Optionally, you can redirect to a room-specific page or send a success message
+            res.redirect(`/${roomCode}`);
+        } else {
+            // Room code does not exist, redirect to /play
+            res.redirect('/play');
+        }
+    } catch (error) {
+        console.error('Error joining room:', error);
+        res.status(500).send('Server error');
+    }
+});
+
+
+
+
 
 //listen at port
 app.listen(port,() => {

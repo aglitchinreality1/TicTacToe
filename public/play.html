@@ -11,6 +11,7 @@
     <link rel="stylesheet" href="css/play.css">
 </head>
 <body>
+
     <div class="container-fluid topcon">
         <nav class="navbar navbar-expand-lg bg-body-tertiary">
             <div class="container-fluid">
@@ -45,6 +46,7 @@
           </nav>
     </div>
 
+
     <div class="mode col-12 row">
       <div class="box col-sm-4 col-11" >
         <h1 class="h">Choose Mode</h1>
@@ -54,9 +56,24 @@
                 <div class="ai" onclick="handleClick()"></div>
             </div>
             <div class="col-6 px-sm-2 px-1">
-                <div class="online"></div>
+                <div class="online" onclick="handleClickOnline()"></div>
             </div>
         </div>
+        </div>
+      </div> 
+
+    <!-- Computer opponent start -->
+<!--  -->
+
+
+      <div class="mobile col-12 row" style="display: none;">
+        <div class="mobyou col-5">
+          <img class="mobimg" id="av2" src="images/default.png">
+          <h1 class="mobh">X</h1>
+        </div>
+        <div class="mobopp col-5">
+          <h1 class="mobh">O</h1>
+          <img class="mobimg" src="images/aip.png">
         </div>
       </div>
 
@@ -69,23 +86,21 @@
           </div>
           <h2 class="text-center" id="p1">Player</h2>
           <p class="pt text-center">You are <br>playing as "X"</p>
+          <img class="turn col-5" id="pturn" src="images/turn.jpg">
         </div>
 
       </div>
       <div class="board col-lg-4 col-md-6 col-11" style="display: none;">
-        <!-- First row -->
         <div class="rowboard row col-12">
           <div class="cell col-4" id="1"></div>
           <div class="cell col-4" id="2"></div>
           <div class="cell col-4" id="3"></div>
         </div>
-        <!-- Second row -->
         <div class="rowboard row col-12">
             <div class="cell col-4" id="4"></div>
             <div class="cell col-4" id="5"></div>
             <div class="cell col-4" id="6"></div>
         </div>
-        <!-- Third row -->
         <div class="rowboard row col-12">
             <div class="cell col-4" id="7"></div>
             <div class="cell col-4" id="8"></div>
@@ -99,6 +114,7 @@
           </div>
           <h2 class="text-center" id="p2">Computer</h2>
           <p class="pt text-center">Computer is <br>playing as "O"</p>
+          <img class="turn col-5" id="comturn" src="images/turn.jpg">
         </div>
       </div>
 
@@ -106,6 +122,42 @@
     </div>
 
 
+<!-- computer opponent ends -->
+
+<div class="createjoin col-12"> 
+  <div class="option col-sm-6 col-11">
+    <div class="room-option" id="c" onclick="generateRoomCode()">
+        Create Room
+    </div>
+    
+    <div class="room-option" id="j">
+        Join Room
+    </div>
+
+    <div class="create col-12" id="create-room" style="display: none;">
+      <h2>Here's your room code</h2>
+      <p class="roomcode" id="roomcode" onclick="generateRoomCode()">loading...</p>
+      <h3>Ask a friend to join!</h3>
+      <p id="wait">Waiting...</p>
+    </div>
+
+    <div class="join col-12" id="join-room" style="display: none;">
+      <h2>Enter a room code</h2>
+      <form id="join-room-form" class="col-12 row" action="/join-room" method="POST">
+        <input class="incode col-sm-5 col-8" type="text" name="roomCode" placeholder="Enter room code" required>
+        <button class="inbutton col-sm-3 col-8" type="submit">Join Room</button>
+      </form>
+    </div>
+  </div>
+</div>
+
+</div>
+
+<!-- online opponent starts -->
+
+
+<!-- online opponent ends -->
+    <script src="js/online.js"></script>
     <script src="js/play.js"></script>
     <script src="js/all.js"></script>
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
