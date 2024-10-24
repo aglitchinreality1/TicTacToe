@@ -15,6 +15,7 @@ body{
     background-color: black !important;
     font-family: "Orbitron", sans-serif !important;
     border-radius: 10px;
+    z-index: 100;
 }
 
 .navbar-brand{

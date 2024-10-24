@@ -46,7 +46,7 @@ let gen;
 let uname;
 
 document.addEventListener('DOMContentLoaded', () => {
-    fetch('/api/gender')
+    fetch('/api/user')
       .then(response => response.json())
       .then(data => {
         gen = data.gender;
@@ -64,26 +64,18 @@ document.addEventListener('DOMContentLoaded', () => {
             av.src = 'images/default.png';
             av2.src = 'images/default.png';
         }
+        displayData('p1',data.name);
       })
-
-      fetch('/api/u_name')
-      .then(response => response.json())
-      .then(data => {
-        uname = data.u_name;
-        const p1 = document.getElementById('p1');
-        if(uname === null){
-            p1.innerHTML = "Player";
-        }
-        else{
-            p1.innerHTML = uname;
-        }
-      })
-      .catch(error => console.error('Error fetching constant:', error));
   });
 
-
-
-
+  function displayData(id, value) {
+    const element = document.getElementById(id);
+    if (element) {
+        element.textContent = value;
+    } else {
+        console.error(`Element with id ${id} not found.`);
+    }
+}
 
 
 
