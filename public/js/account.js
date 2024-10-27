@@ -50,8 +50,8 @@ function updateLevel(wins) {
     } else if (wins > 10 && wins <= 20) {
         im.src = 'images/silver.jpg';
     } else if (wins > 20 && wins <= 40) {
-        im.src = 'images/gold.png';
+        im.src = 'images/gold.jpg';
     } else if (wins > 40) {
-        im.src = 'images/diamond.png';
+        im.src = 'images/diamond.jpg';
     }
 }

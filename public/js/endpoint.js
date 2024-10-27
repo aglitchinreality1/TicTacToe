@@ -90,6 +90,16 @@ const ln = document.getElementById('xn');
 const rn = document.getElementById('on');
 const lh = document.getElementById('xh');
 const rh = document.getElementById('oh');
+
+const xoro1 = document.getElementById('xoro1');
+const xoro2 = document.getElementById('xoro2');
+
+const pturn1 = document.getElementById('pturn1');
+const pturn2 = document.getElementById('pturn2');
+
+let current1;
+let current2;
+
 // Initialize socket connection
 const socket = io();
 socket.emit('joinRoom', roomCode);
@@ -103,10 +113,22 @@ fetch(`/api/${roomCode}/details`)
         if(first===1){
             lh.innerText = "X";
             rh.innerText = "O";
+            xoro1.innerHTML = 'You are <br>playing as "X"';
+            xoro2.innerHTML = 'You are <br>playing as "O"';
+            current1 = pturn1;
+            current2 = pturn2;
+            current1.style.display = 'flex';
+            current2.style.display = 'none';
         }
         else{ 
             lh.innerText = "O";
             rh.innerText = "X";
+            xoro1.innerHTML = 'You are <br>playing as "O"';
+            xoro2.innerHTML = 'You are <br>playing as "X"';
+            current1 = pturn2;
+            current2 = pturn1;
+            current1.style.display = 'flex';
+            current2.style.display = 'none';
     }
         p1.innerText = data.xname;
         p2.innerText = data.oname;
@@ -140,13 +162,13 @@ function firstPlayer(){
         let val = data.first;
         if(val===1){
             console.log(`${data.xname} is X`);
-            alert(`Coin is tossed. ${data.xname} plays first as "X"`);
+            displayToss(data.xname);
             x = data.xname;
             o = data.oname;
         }
         else{ 
             console.log(`${data.oname} is X`);
-            alert(`Coin is tossed. ${data.oname} plays first as "X"`);
+            displayToss(data.oname);
             x = data.oname;
             o = data.xname;
     }
@@ -185,8 +207,15 @@ socket.on('move', ({ cellId, player }) => {
     switchPlayer(); // Switch turns for the remote player
 });
 
+
+let temp;
 // Function to switch the player turn
 function switchPlayer() {
+    temp = current1;
+    current1 = current2;
+    current2 = temp;
+    current1.style.display = 'flex';
+    current2.style.display = 'none';
     currentPlayer = currentPlayer === 'X' ? 'O' : 'X';
 }
 
@@ -209,31 +238,92 @@ function checkGameStatus() {
             winner = board[a];
         }
     });
+    
 
+    let win;
     // If a winner is found, end the game
     if (winner==="X") {
+        win = `${x} Wins!`;
+        console.log(win);
+        displayPopup(win);
         gameActive = false;
-        // Delay the alert to show the winner after the move is placed
-        setTimeout(() => {
-            alert(`${x} wins!`);
-        }, 1000);
         return;
     }
     else if(winner==="O"){
+        win = `${o} Wins!`;
+        console.log(win);
+        displayPopup(win);
         gameActive = false;
-        // Delay the alert to show the winner after the move is placed
-        setTimeout(() => {
-            alert(`${o} wins!`);
-        }, 1000);
         return;
     }
 
     // Check for a draw (no empty cells)
     if (!board.includes('')) {
-        gameActive = false;
-        // Delay the alert to show the draw message after the move is placed
-        setTimeout(() => {
-            alert("It's a draw!");
-        }, 1000);
+        win = "It's a Draw";
+        console.log(win);
+        displayPopup(win);
+        gameActive = false;  
+        return;      
     }
+}
+
+
+// Display popup with the result and options
+function displayPopup(message) {
+    const popup = document.createElement('div');
+    popup.className = 'winner-overlay';
+    popup.innerHTML = `
+        <div class="message">
+            <h1 class="wh">${message}</h1>
+            <div class="buttons">
+                <button class="bt" id="playAgain">Play Again</button>
+                <button class="bt" id="quit">Quit</button>
+            </div>
+        </div>
+    `;
+
+    document.body.appendChild(popup);
+
+    // Play Again button functionality
+    document.getElementById('playAgain').addEventListener('click', () => {
+        document.body.removeChild(popup);
+        window.location.href = `/${roomCode}`;
+    });
+
+    // Quit button functionality
+    document.getElementById('quit').addEventListener('click', () => {
+        // Emit the quitGame event to notify the server
+        socket.emit('quitGame', roomCode);
+        window.location.href = '/play'; // Redirect to the play route
+    });
+}
+
+
+
+// Listen for the playerQuit event to hide the Play Again button
+socket.on('playerQuit', () => {
+    const playAgainButton = document.getElementById('playAgain');
+    playAgainButton.style.display = 'none';
+});
+
+
+function displayToss(message) {
+    const popup = document.createElement('div');
+    popup.className = 'winner-overlay';
+    popup.id = 'toss'
+    popup.innerHTML = `
+        <div class="message">
+            <p class="wh">Coin is tossed. ${message} plays first as "X"</p>
+            <div class="buttons">
+                <button class="bt" id="start">Start</button>
+            </div>
+        </div>
+    `;
+
+    document.body.appendChild(popup);
+
+    // Quit button functionality
+    document.getElementById('start').addEventListener('click', () => {
+        document.getElementById('toss').style.display = 'none';
+    });
 }

@@ -17,6 +17,7 @@ app.use(cors());
 
 // Middleware for serving static files
 app.use(express.static('public'));
+app.use(express.json());
 
 // PostgreSQL connection
 const pool = new Pool({
@@ -165,6 +166,42 @@ app.post('/update', async (req, res) => {
         res.status(500).send('An error occurred while updating user information.');
     }
 });
+
+
+
+
+app.post('/update-game-result', async (req, res) => {
+
+    // Extract the game result from the request body
+    const result = req.body.result;
+
+    // Use the userId from the session
+    const userId = req.session.userId;
+
+    if (!userId) {
+        return res.status(401).json({ message: 'User not authenticated' });
+    }
+
+    try {
+        if(result==='win'){
+            await pool.query('UPDATE userinfo SET wins = wins + 1 WHERE id = $1', [req.session.userId]);
+        }
+        else if(result==='lost'){
+            await pool.query('UPDATE userinfo SET loses = loses + 1 WHERE id = $1', [req.session.userId]);
+        }
+        else if(result==='draw'){
+            await pool.query('UPDATE userinfo SET draws = draws + 1 WHERE id = $1', [req.session.userId]);
+        }
+    } catch (err) {
+        console.error('Error:', err);
+        res.status(500).send('An error occurred while updating user information.');
+    }
+
+    res.json({ message: 'Game result updated successfully' });
+});
+
+
+
 
 
 
@@ -323,6 +360,8 @@ app.get('/api/:roomCode/details', async (req, res) => {
 });
 
 
+
+
 io.on('connection', (socket) => {
     console.log('A user connected:', socket.id);
 
@@ -334,14 +373,21 @@ io.on('connection', (socket) => {
 
     // Listen for a move from a player
     socket.on('move', ({ cellId, player, roomCode }) => {
-        // Broadcast the move to all clients in the same room
         socket.to(roomCode).emit('move', { cellId, player });
     });
 
+    // Listen for the quit action
+    socket.on('quitGame', (roomCode) => {
+        // Broadcast the playerQuit event to all other clients in the room
+        socket.to(roomCode).emit('playerQuit');
+    });
+    
     socket.on('disconnect', () => {
         console.log('User disconnected:', socket.id);
     });
 });
+
+
 
 server.listen(port, () => {
     console.log(`Server running at http://localhost:${port}`);

@@ -198,3 +198,75 @@ body::-webkit-scrollbar {
     margin: 0;
     padding: 0;
 }
+
+.winner-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.711); /* Semi-transparent background */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999; /* High z-index to appear above all other elements */
+}
+
+.message {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    height: 40vh;
+    width: 30%;
+    background-image: url('../images/goldtheme.jpg');
+    border: 10px solid black;
+    border-radius: 20px;
+    background-size: cover;
+    font-family: "Orbitron", sans-serif;
+    padding: 20px;
+    text-align: center;
+}
+
+
+.wh {
+    font-size: 30px;
+    font-weight: 800;
+    color: black;
+    margin-bottom: 20px;
+    margin: 0;
+}
+
+@media only screen and (max-width: 769px) {
+    .message{
+        width: 90%;
+    }
+    .wh{
+        font-size: 25px;
+    }
+}
+
+.buttons {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+    margin-top: 20px;
+}
+
+.bt {
+    background-color: black;
+    font-family: "Orbitron", sans-serif;
+    color: rgb(255, 202, 122); 
+    font-size: medium;
+    font-weight: 700;
+    height: 100%;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 10px;
+    transition: transform 0.2s ease;
+}
+
+.bt:hover {
+    transform: scale(1.1);
+}

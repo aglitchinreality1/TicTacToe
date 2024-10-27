@@ -1,3 +1,5 @@
+
+
 function handleClick() {
     const box = document.querySelector('.box');
     const newBox = document.querySelector('.board');
@@ -149,21 +151,31 @@ function computerMove() {
     }, 500); 
 }
 
-
+// Call sendResultToServer inside checkResult when the game ends
 function checkResult() {
     for (let combo of winningCombinations) {
         const [a, b, c] = combo;
         if (board[a] && board[a] === board[b] && board[a] === board[c]) {
-            displayPopup(board[a] === 'X' ? "YOU WIN :)" : "COMPUTER WINS :(");
+            const result = board[a] === 'X' ? "WIN" : "LOST";
+            if(board[a]==='X'){
+                sendGameResult('win');
+            }
+            else if(board[a]==='O'){
+                sendGameResult('lost');
+            }
+            displayPopup(result === "WIN" ? "YOU WIN :)" : "COMPUTER WINS :(");
             gameActive = false;
             return;
         }
     }
     if (!board.includes('')) {
+        sendGameResult('draw');
         displayPopup("DRAW :|");
         gameActive = false;
     }
 }
+
+
 
 function setTurnIndicator() {
     const playerTurn = document.getElementById('pturn');
@@ -256,5 +268,25 @@ function displayPopup(message) {
     // Quit button functionality
     document.getElementById('quit').addEventListener('click', () => {
         window.location.href = '/play'; // Redirect to the play route
+    });
+}
+
+// This function is called when the game ends and the result is determined
+function sendGameResult(result) {
+    const data = { result };
+
+    fetch('/update-game-result', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data) // Ensure it's a JSON string
+    })
+    .then(response => response.json())
+    .then(data => {
+        console.log('Success:', data);
+    })
+    .catch((error) => {
+        console.error('Error:', error);
     });
 }
