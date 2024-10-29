@@ -202,7 +202,34 @@ app.post('/update-game-result', async (req, res) => {
 
 
 
+app.post('/update-multi-result', async (req, res) => {
 
+    // Extract the game result, wid, and lid from the request body
+    const { result, wid, lid } = req.body;
+
+    // Use the userId from the session
+    const userId = req.session.userId;
+
+    if (wid != userId) {
+        return;
+    }
+
+    if(result==='notdraw'){
+        await pool.query('UPDATE userinfo SET wins = wins + 1 WHERE id = $1', [wid]);
+        await pool.query('UPDATE userinfo SET loses = loses + 1 WHERE id = $1', [lid]);
+    }
+    else if(result==='draw'){
+        await pool.query('UPDATE userinfo SET draws = draws + 1 WHERE id = $1', [wid]);
+        await pool.query('UPDATE userinfo SET draws = draws + 1 WHERE id = $1', [lid]);
+    }
+    else if(result === 'quit'){
+        await pool.query('DELETE FROM rooms WHERE id1=$1',[wid]);
+        console.log("room deleted");
+    }
+    
+    // Respond with success message
+    res.json({ message: 'Game result received successfully' });
+});
 
 
 //online game logic//
@@ -237,8 +264,8 @@ app.get('/generate-room-code', async (req, res) => {
 
         // Insert the new room code into the 'rooms' table along with name and gender
         await pool.query(
-            `INSERT INTO rooms (roomcode, xname, xgender, first) VALUES ($1, $2, $3, $4)`,
-            [roomCode, name, gender, val]
+            `INSERT INTO rooms (roomcode, xname, xgender, first, id1) VALUES ($1, $2, $3, $4, $5)`,
+            [roomCode, name, gender, val, req.session.userId]
         );
 
         // Dynamically create an endpoint for the roomCode
@@ -309,8 +336,6 @@ app.post('/join-room', async (req, res) => {
                 [req.session.userId]
             );
 
-            console.log('User Info:', userResult.rows);
-
             if (userResult.rows.length === 0) {
                 console.error('User not found');
                 return res.status(404).send('User not found');
@@ -321,9 +346,9 @@ app.post('/join-room', async (req, res) => {
             // Update the room with player's name and gender
             await pool.query(
                 `UPDATE rooms 
-                 SET o = 'ready', oname = $1, ogender = $2 
-                 WHERE roomcode = $3`,
-                [name, gender, roomCode]
+                 SET o = 'ready', oname = $1, ogender = $2, id2 = $3
+                 WHERE roomcode = $4`,
+                [name, gender, req.session.userId, roomCode]
             );
 
             res.redirect(`/${roomCode}`);
@@ -343,13 +368,13 @@ app.get('/api/:roomCode/details', async (req, res) => {
     const { roomCode } = req.params;
     try {
         const result = await pool.query(
-            'SELECT xname, xgender, oname, ogender, first FROM rooms WHERE roomcode = $1',
+            'SELECT xname, xgender, oname, ogender, first, id1, id2 FROM rooms WHERE roomcode = $1',
             [roomCode]
         );
 
         if (result.rows.length > 0) {
-            const { xname, xgender, oname, ogender, first } = result.rows[0];
-            res.json({ xname, xgender, oname, ogender, first });
+            const { xname, xgender, oname, ogender, first, id1, id2 } = result.rows[0];
+            res.json({ xname, xgender, oname, ogender, first, id1, id2});
         } else {
             res.status(404).send('Room not found');
         }
@@ -363,12 +388,10 @@ app.get('/api/:roomCode/details', async (req, res) => {
 
 
 io.on('connection', (socket) => {
-    console.log('A user connected:', socket.id);
-
+ 
     // Join a room based on room code
     socket.on('joinRoom', (roomCode) => {
         socket.join(roomCode);
-        console.log(`User with ID: ${socket.id} joined room: ${roomCode}`);
     });
 
     // Listen for a move from a player
@@ -380,10 +403,6 @@ io.on('connection', (socket) => {
     socket.on('quitGame', (roomCode) => {
         // Broadcast the playerQuit event to all other clients in the room
         socket.to(roomCode).emit('playerQuit');
-    });
-    
-    socket.on('disconnect', () => {
-        console.log('User disconnected:', socket.id);
     });
 });
 

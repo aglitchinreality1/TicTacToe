@@ -99,7 +99,9 @@ const pturn2 = document.getElementById('pturn2');
 
 let current1;
 let current2;
-
+let xid;
+let oid;
+let del;
 // Initialize socket connection
 const socket = io();
 socket.emit('joinRoom', roomCode);
@@ -117,6 +119,8 @@ fetch(`/api/${roomCode}/details`)
             xoro2.innerHTML = 'You are <br>playing as "O"';
             current1 = pturn1;
             current2 = pturn2;
+            xid = data.id1;
+            oid = data.id2;
             current1.style.display = 'flex';
             current2.style.display = 'none';
         }
@@ -127,11 +131,14 @@ fetch(`/api/${roomCode}/details`)
             xoro2.innerHTML = 'You are <br>playing as "X"';
             current1 = pturn2;
             current2 = pturn1;
+            xid = data.id2;
+            oid = data.id1;
             current1.style.display = 'flex';
             current2.style.display = 'none';
     }
         p1.innerText = data.xname;
         p2.innerText = data.oname;
+        del = data.id1;
         updatePlayerImages(data.xgender, data.ogender);
     })
     .catch(error => console.error('Error fetching room details:', error));
@@ -239,19 +246,26 @@ function checkGameStatus() {
         }
     });
     
-
+    let wid;
+    let lid;
+    let d1;
+    let d2;
     let win;
     // If a winner is found, end the game
     if (winner==="X") {
         win = `${x} Wins!`;
-        console.log(win);
+        wid = xid;
+        lid = oid;
+        sendGameResult('notdraw',wid,lid);
         displayPopup(win);
         gameActive = false;
         return;
     }
     else if(winner==="O"){
         win = `${o} Wins!`;
-        console.log(win);
+        wid = oid;
+        lid = xid;
+        sendGameResult('notdraw',wid,lid);
         displayPopup(win);
         gameActive = false;
         return;
@@ -260,7 +274,9 @@ function checkGameStatus() {
     // Check for a draw (no empty cells)
     if (!board.includes('')) {
         win = "It's a Draw";
-        console.log(win);
+        d1 = xid;
+        d2 = oid;
+        sendGameResult('draw',d1,d2);
         displayPopup(win);
         gameActive = false;  
         return;      
@@ -292,6 +308,9 @@ function displayPopup(message) {
 
     // Quit button functionality
     document.getElementById('quit').addEventListener('click', () => {
+        wid = oid;
+        lid = xid;
+        sendGameResult('quit',del,0);
         // Emit the quitGame event to notify the server
         socket.emit('quitGame', roomCode);
         window.location.href = '/play'; // Redirect to the play route
@@ -325,5 +344,30 @@ function displayToss(message) {
     // Quit button functionality
     document.getElementById('start').addEventListener('click', () => {
         document.getElementById('toss').style.display = 'none';
+    });
+}
+
+
+// This function is called when the game ends and the result is determined
+function sendGameResult(result, wid, lid) {
+    const data = { 
+        result, 
+        wid, 
+        lid
+    };
+
+    fetch('/update-multi-result', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data) // Ensure it's a JSON string
+    })
+    .then(response => response.json())
+    .then(data => {
+        console.log('Success:', data);
+    })
+    .catch((error) => {
+        console.error('Error:', error);
     });
 }
