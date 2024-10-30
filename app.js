@@ -24,7 +24,7 @@ const pool = new Pool({
     user: "postgres",
     host: "localhost",
     database: "TicTacToeGame",
-    password: "NewGen-123",
+    password: "Your password",
     port: "5432",
 });
 
@@ -33,15 +33,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 
 // Session configuration for tracking user login state
 app.use(session({
-    secret: 'NewGen-123',
-    resave: false,
-    saveUninitialized: true,
-}));
-
-
-// Session configuration for tracking user login state
-app.use(session({
-    secret: 'NewGen-123',
+    secret: 'your secret',
     resave: false,
     saveUninitialized: true,
 }));
