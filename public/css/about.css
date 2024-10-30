@@ -1,0 +1,177 @@
+body{
+    margin: 0;
+    padding: 0;
+    background-image: url('../images/goldtheme.jpg');
+    background-size: cover;
+    background-attachment: fixed;
+}
+
+.topcon{
+    position: absolute;
+    top: 3vh;
+}
+
+.navbar{
+    background-color: black !important;
+    font-family: "Orbitron", sans-serif !important;
+    border-radius: 10px;
+    z-index: 100;
+}
+
+.navbar-brand{
+    color: rgba(255, 202, 122, 0.852) !important;
+    padding-left: 1vh;
+    font-size: 3.5vh !important;
+    font-weight: 500;
+}
+
+.b{
+    color: rgba(255, 202, 122, 0.852) !important;
+    font-weight: 300;
+    font-size: 2.5vh !important;
+    padding-left: 1.5vh !important;
+    padding-right: 1.5vh !important;
+    border-radius: 10px;
+    margin-left: 2vh !important;
+    transition: transform 0.5s ease;
+}
+
+.b:hover{
+    color: black !important;
+    background-color:rgb(255, 202, 122) !important;
+    transform: scale(105%);
+}
+
+.navbar-brand::after {
+    content: 'Play TicTacToe!';
+    transition: opacity 0.3s ease, transform 0.3s ease; 
+    opacity: 1;
+}
+
+.navbar-brand:hover::after {
+    content: '';
+    opacity: 0; 
+}
+
+
+.navbar-brand:hover::before {
+    content: 'XOXOXOXOXOX';
+    opacity: 1;
+} 
+
+.sub{
+    color: black !important;
+    background-color: rgb(255, 202, 122) !important;
+    font-weight: 500 !important;
+    border: 0px !important;
+    transition: transform 0.5s ease;
+}
+
+.sub:hover{
+    color: rgb(255, 202, 122) !important;
+    background-color: black !important;
+    border: 1px solid rgb(255, 202, 122) !important;
+    transform: scale(105%);
+}
+
+.navbar-toggler{
+    background-color: rgb(255, 202, 122) !important;
+}
+
+
+/* separation */
+
+.abbox{
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    top:110px;
+    height: 80vh;
+    width: 100%;
+}
+
+.abcontent {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: "Orbitron", sans-serif;
+    color: rgb(255, 202, 122);
+    position: relative;
+    height: 100%;
+    width: 75%;
+    background-color: black;
+    border-radius: 20px;
+    overflow: hidden;
+    box-sizing: border-box;
+}
+
+.me {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    height: 100%;
+    border-radius: 10px;
+    overflow: hidden;
+    float: left; 
+}
+
+.bubble{
+    position: absolute;
+    top: 30px;
+    left: 30px;
+    height: 70%;
+    width: 60%;
+    border: 5px solid rgb(255, 202, 122);
+    border-radius: 10px;
+    z-index: 150;
+    padding: 20px;
+    overflow-wrap: break-word;
+    overflow: scroll;
+}
+
+.bubble::-webkit-scrollbar {
+    display: none;
+}
+
+.journey{
+    position: absolute;
+    bottom: 40px;
+    left: 100px;
+    font-size: xxx-large;
+    z-index: 150;
+}
+
+.demo{
+    display: none;
+}
+
+@media only screen and (max-width: 600px) {
+    .abcontent{
+        width: 91%;
+    }
+    .me{
+        height: 50%;
+    }
+    .bubble{
+        top: 20px;
+        width: 83%;
+        height: 40%;
+    }
+    .journey{
+        font-size: x-large;
+        bottom: 240px;
+        left: 40px;
+    }
+    .demo{
+        position: absolute;
+        bottom: 130px;
+        left: 70px;
+        border-radius: 10px;
+        z-index: 150;
+        display: flex;
+        height: 80px;
+        width: 120px;
+    }
+}
+

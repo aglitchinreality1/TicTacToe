@@ -84,6 +84,13 @@ app.get('/account', (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'account.html'));
 });
 
+app.get('/about', (req, res) => {
+    if (!req.session.userId) {
+        return res.redirect('/login');
+    }
+    res.sendFile(path.join(__dirname, 'public', 'about.html'));
+});
+
 // API endpoint for user data
 app.get('/api/user', async (req, res) => {
     if (!req.session.userId) {
@@ -223,7 +230,7 @@ app.post('/update-multi-result', async (req, res) => {
         await pool.query('UPDATE userinfo SET draws = draws + 1 WHERE id = $1', [lid]);
     }
     else if(result === 'quit'){
-        await pool.query('DELETE FROM rooms WHERE id1=$1',[wid]);
+        await pool.query('DELETE FROM rooms WHERE id1 = $1',[wid]);
         console.log("room deleted");
     }
     
@@ -405,6 +412,40 @@ io.on('connection', (socket) => {
         socket.to(roomCode).emit('playerQuit');
     });
 });
+
+app.get('/search-player', async (req, res) => {
+    const email = req.query.email;
+    
+    try {
+        // Query account table to find the ID by email
+        const user = await pool.query('SELECT id FROM account WHERE email = $1', [email]);
+        
+        if (user.rows.length === 0) {
+            return res.json({ success: false, message: 'Player not found' });
+        }
+
+        const userId = user.rows[0].id;
+        
+        // Query userinfo table to get details for the found userId
+        const userInfo = await pool.query(
+            'SELECT name, age, gender, wins, loses, draws FROM userinfo WHERE id = $1',
+            [userId]
+        );
+
+        if (userInfo.rows.length === 0) {
+            return res.json({ success: false, message: 'Player details not found' });
+        }
+
+        // Send back player details
+        res.json({ success: true, player: userInfo.rows[0] });
+        
+    } catch (error) {
+        console.error('Error fetching player data:', error);
+        res.status(500).json({ success: false, message: 'An error occurred' });
+    }
+});
+
+
 
 
 

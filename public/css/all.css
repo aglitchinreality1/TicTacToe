@@ -1,0 +1,144 @@
+.fpop{
+    height: 100vh;
+    width: 100vw;
+    background-color: rgba(0, 0, 0, 0.803);
+    z-index: 10000;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    position: fixed;
+}
+
+.custom-card {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: black;
+    border: 7px solid rgba(255, 202, 122, 0.852);
+    border-radius: 20px;
+    height: 60vh;
+    font-family: "Orbitron", sans-serif;
+    color: rgba(255, 202, 122, 0.852);
+}
+
+@media (min-width: 992px) { /* Laptop and larger */
+    .custom-card {
+        width: 33.33%; /* col-4 equivalent */
+    }
+}
+
+@media (max-width: 576px) { /* Phone and smaller screens */
+    .custom-card {
+        width: 91.66%; /* col-11 equivalent */
+    }
+}
+
+.card-body{
+    font-family: "Orbitron", sans-serif;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.fhead{
+    position: absolute;
+    top: 25px;
+    font-weight: 700;
+    font-size: xx-large;
+}
+
+.main{
+    position: absolute;
+    top: 100px;
+    display: flex;
+    flex-direction: row;
+    height: 40%;
+    gap:20px;
+}
+
+.fimg{
+    border: 4px solid rgba(255, 202, 122, 0.852);
+    margin-left: 20px;
+    border-radius: 10px;
+    height: 100%;
+    aspect-ratio: 1;
+    padding: 0;
+}
+
+.info{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+}
+
+
+
+.statsinfo{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    top:285px;
+    display: flex;
+    flex-direction: row;
+    height: 25%;
+}
+
+.scores{
+    margin: 5px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    flex: 1;
+    border-radius: 10px;
+    font-size: x-large;
+}
+
+.w{
+    border: 4px solid rgb(4, 255, 0);
+    color: rgb(4, 255, 0);
+}
+
+.l{
+    border: 4px solid red;
+    color: red;
+}
+
+.d{
+    border: 4px solid gray;
+    color: gray;
+}
+
+
+@media only screen and (max-width: 600px) {
+    .main{
+        height: 30%;
+    }
+    .ftext{
+        font-size: medium;
+    }
+    .statsinfo{
+        top:230px;
+        height: 35%;
+    }
+    .scores{
+        margin: 5px;
+    }
+}
+
+.close{
+    position: absolute;
+    top: 4px;
+    right: 4px;
+    border: 0;
+    font-family: "Orbitron", sans-serif;
+    font-weight: 700;
+    background-color: rgba(255, 202, 122, 0.852);
+    color: black;
+    border-radius: 100%;
+}
